@@ -1,4 +1,4 @@
-Jarcomp version 1
+Jarcomp version 2
 =================
 
 Jarcomp is a simple tool for comparing jar files or zip files.
@@ -16,7 +16,7 @@ Running
 =======
 
 To run Jarcomp from the jar file, simply call it from a command prompt or shell:
-   java -jar jarcomp_01.jar
+   java -jar jarcomp_02.jar
 
 If the jar file is saved in a different directory, you will need to include the path.
 Depending on your system settings, you may be able to click or double-click on the jar file
@@ -24,7 +24,17 @@ in a file manager window to execute it.  A shortcut, menu item, alias, desktop i
 or other link can of course be made should you wish.
 
 To specify two files to compare, simply add them to the command line, eg:
-   java -jar jarcomp_01.jar file1.jar file2.jar
+   java -jar jarcomp_02.jar file1.jar file2.jar
+
+
+What's new with version 2
+===============================
+
+* Fixed bug affecting the title of the second file selection dialog (thanks Greg!)
+* Added yellow row highlighting for jar entries which are different
+* Fixed the sort order when sorting by the "size change" column
+* Added spacing around the summary labels
+* Added tooltips to the "Path" labels in case the paths are too long to display
 
 
 Further information and updates

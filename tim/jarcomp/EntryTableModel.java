@@ -37,6 +37,15 @@ public class EntryTableModel extends AbstractTableModel
 		// TODO: Columns for size1, size2, status (as icon), size difference
 	}
 
+
+	/**
+	 * @return class of column, needed for sorting the Longs properly
+	 */
+	public Class<?> getColumnClass(int inColNum)
+	{
+		return getValueAt(0, inColNum).getClass();
+	}
+
 	/**
 	 * @return column name
 	 */
@@ -66,7 +75,7 @@ public class EntryTableModel extends AbstractTableModel
 			EntryDetails entry = _entries.get(inRowNum);
 			if (inColNum == 0) return entry.getName();
 			else if (inColNum == 1) return getText(entry.getStatus());
-			return new Long(entry.getSizeDifference());
+			return entry.getSizeChange();
 		}
 		return null;
 	}
@@ -88,4 +97,17 @@ public class EntryTableModel extends AbstractTableModel
 		}
 		return inStatus.toString();
 	}
+
+	/**
+	 * @return true if specified row represents a difference between the two files
+	 */
+	public boolean areDifferent(int inRowNum)
+	{
+		if (inRowNum >= 0 && inRowNum < getRowCount())
+		{
+			return _entries.get(inRowNum).isChanged();
+		}
+		return false;
+	}
 }
+

@@ -10,9 +10,9 @@ import java.io.File;
 public class JarComp
 {
 	/** Version number of tool */
-	public static final String VERSION_NUMBER = "1";
+	public static final String VERSION_NUMBER = "2";
 	/** Build number */
-	public static final String BUILD_NUMBER = "008";
+	public static final String BUILD_NUMBER = "009";
 
 	/**
 	 * Main entry point to Jar comparer tool
@@ -31,13 +31,7 @@ public class JarComp
 		// Construct main window and initialise
 		CompareWindow window = new CompareWindow();
 		// Pass two files to start with, or instruct to prompt
-		if (file1 == null) {
-			// no files given, so prompt for them
-			window.startCompare();
-		}
-		else {
-			// at least one file given, so use it/them
-			window.startCompare(file1, file2, false);
-		}
+		window.startCompare(file1, file2, false);
 	}
 }
+

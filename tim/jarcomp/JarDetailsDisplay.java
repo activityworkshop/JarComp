@@ -70,6 +70,7 @@ public class JarDetailsDisplay extends JPanel
 	{
 		_labels[0].setText(inFile.getName());
 		_labels[1].setText(inFile.getParent());
+		_labels[1].setToolTipText(inFile.getParent());
 		_labels[2].setText("" + inResults.getSize(inIndex));
 		_labels[3].setText("" + inResults.getNumFiles(inIndex));
 	}

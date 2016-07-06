@@ -14,6 +14,8 @@ public class EntryDetails
 	private long[] _sizes = new long[2];
 	/** Md5 sums in both archives */
 	private String[] _md5Sums = new String[2];
+	/** SizeChange */
+	private SizeChange _sizeChange = new SizeChange();
 
 	/** Constants for entry status */
 	public enum EntryStatus
@@ -57,9 +59,11 @@ public class EntryDetails
 	 */
 	public void setSize(int inIndex, long inSize)
 	{
-		if (inIndex==0 || inIndex==1) {
+		if (inIndex==0 || inIndex==1)
+		{
 			_sizes[inIndex] = inSize;
 			_present[inIndex] = true;
+			_sizeChange.update(_sizes[1] - _sizes[0], isChanged());
 		}
 	}
 
@@ -79,8 +83,10 @@ public class EntryDetails
 	 */
 	public void setMd5Sum(int inIndex, String inMd5Sum)
 	{
-		if (inIndex==0 || inIndex==1) {
+		if (inIndex==0 || inIndex==1)
+		{
 			_md5Sums[inIndex] = inMd5Sum;
+			_sizeChange.update(_sizes[1] - _sizes[0], isChanged());
 		}
 	}
 
@@ -109,8 +115,27 @@ public class EntryDetails
 	/**
 	 * @return difference in file sizes (bytes)
 	 */
-	public long getSizeDifference()
+//	public long getSizeDifference()
+//	{
+//		return _sizes[1] - _sizes[0];
+//	}
+
+
+	/**
+	 * @return size change object
+	 */
+	public SizeChange getSizeChange()
 	{
-		return _sizes[1] - _sizes[0];
+		return _sizeChange;
+	}
+
+	/**
+	 * @return true if the row represents a change
+	 */
+	public boolean isChanged()
+	{
+		EntryStatus status = getStatus();
+		return status != EntryStatus.SAME_SIZE && status != EntryStatus.EQUAL;
 	}
 }
+

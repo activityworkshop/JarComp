@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.TableCellRenderer;
 
 /**
  * Class to manage the main compare window
@@ -107,22 +109,36 @@ public class CompareWindow
 
 		_statusLabel = new JLabel("");
 		_statusLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		_statusLabel.setBorder(new EmptyBorder(5, 10, 1, 1));
 		topPanel.add(_statusLabel);
 		_statusLabel2 = new JLabel("");
 		_statusLabel2.setAlignmentX(Component.LEFT_ALIGNMENT);
+		_statusLabel2.setBorder(new EmptyBorder(1, 10, 5, 1));
 		topPanel.add(_statusLabel2);
 		mainPanel.add(topPanel, BorderLayout.NORTH);
 
 		// main table panel
 		_tableModel = new EntryTableModel();
-		JTable table = new JTable(_tableModel);
+		JTable table = new JTable(_tableModel)
+		{
+			/** Modify the renderer according to the row status */
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
+			{
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (!isRowSelected(row))
+				{
+					int modelRow = convertRowIndexToModel(row);
+					boolean isChange = ((EntryTableModel)getModel()).areDifferent(modelRow);
+					c.setBackground(isChange ? java.awt.Color.YELLOW : getBackground());
+				}
+				return c;
+			}
+		};
 		table.getColumnModel().getColumn(0).setPreferredWidth(300);
 		table.getColumnModel().getColumn(1).setPreferredWidth(70);
 		table.getColumnModel().getColumn(2).setPreferredWidth(70);
 		// Table sorting by clicking on column headings
 		table.setAutoCreateRowSorter(true);
-		// File size rendering
-		table.getColumnModel().getColumn(2).setCellRenderer(new SizeChangeRenderer());
 		mainPanel.add(new JScrollPane(table), BorderLayout.CENTER);
 
 		// button panel at bottom
@@ -250,9 +266,9 @@ public class CompareWindow
 		if (_fileChooser == null)
 		{
 			_fileChooser = new JFileChooser();
-			_fileChooser.setDialogTitle(inTitle);
 			_fileChooser.setFileFilter(new GenericFileFilter("Jar files and Zip files", new String[] {"jar", "zip"}));
 		}
+		_fileChooser.setDialogTitle(inTitle);
 		File file = null;
 		boolean rechoose = true;
 		while (rechoose)
@@ -277,3 +293,4 @@ public class CompareWindow
 		return file;
 	}
 }
+
